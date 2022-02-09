@@ -38,7 +38,7 @@ class ApproveLoan extends Command
     public function handle(LoanService $loanService)
     {
         try{
-            $loanService->approve(Loan::find($this->argument('loan')), now());
+            $loanService->approve(Loan::find($this->argument('loan')), now()->format('Y-m-d'));
             $this->info("Loan with id {$this->argument('loan')} successfully approved");
         } catch (\Exception $error) {
             $this->error($error->getMessage());

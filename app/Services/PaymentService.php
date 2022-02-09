@@ -17,10 +17,11 @@ class PaymentService
         $termAmount = ($loan->amount - $fractionAmount) / $loan->term;
 
         for($i = 0; $i < $loan->term; $i++) {
+            $amount = $termAmount;
             // To prevent fractions, the fractional value from the mod operation is
             // spread across the payments for each term until the complete value is added
            if($i < $fractionAmount) {
-               $termAmount += 1;
+               $amount += 1;
            }
 
            // generate due date for weekly payments by adding on weeks based on the payment term
@@ -28,7 +29,7 @@ class PaymentService
 
            Payment::create([
                'currency_code' => $loan->currency_code,
-               'amount' => $termAmount,
+               'amount' => $amount,
                'due_on' => $dueOn,
                'loan_id' => $loan->id,
                'user_id' => $loan->user_id,

@@ -31,16 +31,8 @@ class Loan extends Model
      * @var string[]
      */
     protected $casts = [
-        'status' => LoanStatus::class
-    ];
-
-    /**
-     * The attributes that should be cast to date.
-     *
-     * @var string[]
-     */
-    protected $dates = [
-        'issued_on'
+        'status' => LoanStatus::class,
+        'issued_on' => 'date:Y-m-d'
     ];
 
     /**

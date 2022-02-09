@@ -31,9 +31,9 @@ class Payment extends Model
     /**
      * @var string[]
      */
-    protected $dates = [
-        'due_on',
-        'paid_on'
+    protected $casts = [
+        'due_on' => 'date:Y-m-d',
+        'paid_on' => 'date:Y-m-d',
     ];
 
     /**

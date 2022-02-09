@@ -33,7 +33,7 @@ class LoanService
      * @return Loan
      * @throws \Exception
      */
-    public function approve(Loan $loan, Carbon $issuedOn): Loan
+    public function approve(Loan $loan, string $issuedOn): Loan
     {
         try {
             if($loan->status === LoanStatus::ONGOING) {
@@ -62,11 +62,17 @@ class LoanService
      * @param Loan $loan
      * @return Loan
      */
-    public function close(Loan $loan): Loan
+    public function close(Loan $loan, bool $updatePendingAndPaidAmount = false): Loan
     {
-        $loan->update([
+        $attributes = [
             'status' => LoanStatus::CLOSED,
-        ]);
+        ];
+
+        if($updatePendingAndPaidAmount) {
+            $attributes['pending_amount'] = 0;
+            $attributes['paid_amount'] = $loan->amount;
+        }
+        $loan->update($attributes);
         return $loan->fresh();
     }
 
@@ -94,7 +100,7 @@ class LoanService
                 'paid_on' => now()
             ]);
 
-            $this->close($loan);
+            $this->close($loan, true);
             DB::commit();
 
             return $loan->fresh();

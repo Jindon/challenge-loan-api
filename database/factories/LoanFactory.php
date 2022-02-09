@@ -36,6 +36,7 @@ class LoanFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'status' => LoanStatus::ONGOING,
+                'paid_amount' => 0,
                 'pending_amount' => $attributes['amount'],
                 'issued_on' => $this->faker->dateTimeBetween('-5 months')
             ];
