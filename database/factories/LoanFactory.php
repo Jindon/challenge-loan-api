@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\LoanStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,5 +24,21 @@ class LoanFactory extends Factory
             'term' => $this->faker->numberBetween(10, 104),
             'user_id' => User::factory()
         ];
+    }
+
+    /**
+     * Make the loan approved
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function approved()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => LoanStatus::ONGOING,
+                'pending_amount' => $attributes['amount'],
+                'issued_on' => $this->faker->dateTimeBetween('-5 months')
+            ];
+        });
     }
 }

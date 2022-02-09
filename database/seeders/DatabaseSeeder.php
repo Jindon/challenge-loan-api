@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Loan;
+use App\Models\Payment;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
