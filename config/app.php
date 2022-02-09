@@ -196,4 +196,6 @@ return [
         // ...
     ])->toArray(),
 
+    'supported_currency_codes' => ['USD', 'INR', 'SGD']
+
 ];
