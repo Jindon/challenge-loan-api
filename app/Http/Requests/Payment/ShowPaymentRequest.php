@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Payment;
 
+use App\Models\Payment;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ShowPaymentRequest extends FormRequest
@@ -13,7 +14,11 @@ class ShowPaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if($this->route('payment')) {
+            return $this->user()->can('view', $this->route('payment'));
+        }
+
+        return $this->user()->can('view', Payment::class);
     }
 
     /**

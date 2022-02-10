@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Loan;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,8 +25,8 @@ return new class extends Migration
             $table->date('due_on')->nullable();
             $table->timestamp('paid_on')->nullable();
 
-            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreignId('loan_id')->references('id')->on('loans')->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Loan::class)->constrained()->cascadeOnDelete();
 
             $table->timestamps();
         });

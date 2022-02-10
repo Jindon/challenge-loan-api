@@ -16,6 +16,6 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('/loans/{loan}', [LoanController::class, 'show']);
 
     Route::get('/loans/{loan}/payments', [PaymentController::class, 'index']);
-    Route::put('/loans/{loan}/payments/{payment}', [PaymentController::class, 'update']);
+    Route::put('/loans/{loan}/payments/{payment:id}', [PaymentController::class, 'update']);
     Route::post('/loans/{loan}/payments/pay-full', FullPaymentController::class);
 });

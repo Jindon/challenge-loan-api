@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Loan;
 
+use App\Models\Loan;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ShowLoanRequest extends FormRequest
@@ -13,7 +14,11 @@ class ShowLoanRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if ($this->route('loan')) {
+            return $this->user()->can('view', $this->route('loan'));
+        }
+
+        return $this->user()->can('view', Loan::class);
     }
 
     /**

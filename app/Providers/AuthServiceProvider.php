@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Loan;
+use App\Models\Payment;
+use App\Policies\LoanPolicy;
+use App\Policies\PaymentPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -13,7 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Loan::class => LoanPolicy::class,
+        Payment::class => PaymentPolicy::class
     ];
 
     /**

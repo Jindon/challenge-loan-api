@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Loan;
 
+use App\Models\Loan;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,7 +15,7 @@ class CreateLoanRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('create', Loan::class);
     }
 
     /**
