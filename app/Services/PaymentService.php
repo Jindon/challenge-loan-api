@@ -27,7 +27,11 @@ class PaymentService
            // generate due date for weekly payments by adding on weeks based on the payment term
            $dueOn = $loan->issued_on->addWeeks($i + 1);
 
-           Payment::create([
+           Payment::updateOrCreate([
+               'amount' => $amount,
+               'due_on' => $dueOn,
+               'loan_id' => $loan->id,
+           ], [
                'currency_code' => $loan->currency_code,
                'amount' => $amount,
                'due_on' => $dueOn,
@@ -39,6 +43,7 @@ class PaymentService
 
     /**
      * @param Payment $payment
+     * @param string|null $paidOn
      * @return Payment
      * @throws \Exception
      */

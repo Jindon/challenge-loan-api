@@ -20,26 +20,27 @@ class LoanFactory extends Factory
     {
         return [
             'currency_code' => collect(config('app.supported_currency_codes'))->random(),
-            'amount' => $this->faker->numberBetween(20, 1000) * 10_000,
+            'amount' => $this->faker->numberBetween(100000, 1000000),
             'term' => $this->faker->numberBetween(10, 104),
             'user_id' => User::factory()
         ];
     }
 
     /**
-     * Make the loan approved
+     * Make loan approved
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @param array $states
+     * @return LoanFactory
      */
-    public function approved()
+    public function approved(array $states = []): LoanFactory
     {
-        return $this->state(function (array $attributes) {
-            return [
+        return $this->state(function (array $attributes) use($states) {
+            return array_merge([
                 'status' => LoanStatus::ONGOING,
                 'paid_amount' => 0,
                 'pending_amount' => $attributes['amount'],
                 'issued_on' => $this->faker->dateTimeBetween('-5 months')
-            ];
+            ], $states);
         });
     }
 }

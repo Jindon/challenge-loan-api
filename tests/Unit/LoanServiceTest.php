@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Enums\LoanStatus;
 use App\Models\Loan;
+use App\Models\Payment;
 use App\Models\User;
 use App\Services\LoanService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -88,27 +89,14 @@ class LoanServiceTest extends TestCase
 
         //Assert payments are generated
         $this->assertDatabaseCount('payments', 3);
-        $this->assertDatabaseHas('payments', [
-            'loan_id' => $loan->id,
-            'user_id' => $this->user->id,
-            'currency_code' => $loan->currency_code,
-            'amount' => 101, // $amount % $term = 3, so 2 entries will be 100 + 1
-            'paid_on' => null
-        ]);
-        $this->assertDatabaseHas('payments', [
-            'loan_id' => $loan->id,
-            'user_id' => $this->user->id,
-            'currency_code' => $loan->currency_code,
-            'amount' => 101, // $amount % $term = 3, so 2 entries will be 100 + 1
-            'paid_on' => null
-        ]);
-        $this->assertDatabaseHas('payments', [
-            'loan_id' => $loan->id,
-            'user_id' => $this->user->id,
-            'currency_code' => $loan->currency_code,
-            'amount' => 100,
-            'paid_on' => null
-        ]);
+
+        // 302 % 3 = 2
+        // Assert there are 2 payments with [(302 - 2)/3 = 100] 100+1 as amount
+        $this->assertEquals(2, Payment::where('loan_id', $loan->id)->where('amount', 101)->count());
+
+        // 302 % 3 = 2
+        // Assert there is [3-2= 1] 1 payment with [(302 - 2)/3 = 100] 100 as amount
+        $this->assertEquals(1, Payment::where('loan_id', $loan->id)->where('amount', 100)->count());
     }
 
     public function test_service_cannot_approve_already_approved_loan_application()

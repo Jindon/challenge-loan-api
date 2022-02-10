@@ -45,7 +45,7 @@ class Payment extends Model
     protected function paid(): Attribute
     {
         return new Attribute(
-            get: fn ($value, $attributes) => ! is_null($attributes['paid_on']),
+            get: fn ($value, $attributes) => ! is_null(data_get($attributes, 'paid_on')),
         );
     }
 

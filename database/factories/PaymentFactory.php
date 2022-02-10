@@ -18,12 +18,15 @@ class PaymentFactory extends Factory
      */
     public function definition()
     {
-        $loan = Loan::factory()->approved()->create();
+        $loan = Loan::factory()->approved()->create([
+            'issued_on' => '2022-02-10'
+        ]);
         return [
             'currency_code' => $loan->currency_code,
             'amount' => $this->faker->numberBetween(2, 10) * 10_000,
             'user_id' => User::factory(),
             'loan_id' => $loan->id,
+            'due_on' => $loan->issued_on->addWeeks(1)
         ];
     }
 }
