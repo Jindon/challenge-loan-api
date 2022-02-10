@@ -3,13 +3,11 @@
 use App\Http\Controllers\FullPaymentController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\PaymentController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function() {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::get('/user', UserController::class);
 
     Route::get('/loans', [LoanController::class, 'index']);
     Route::post('/loans', [LoanController::class, 'store']);
