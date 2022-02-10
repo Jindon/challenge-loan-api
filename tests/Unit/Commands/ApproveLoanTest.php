@@ -53,4 +53,10 @@ class ApproveLoanTest extends TestCase
         $this->artisan("loan:approve {$this->loan->id}")->assertFailed();
 
     }
+
+    public function test_command_cannot_approve_non_existent_loan()
+    {
+        $this->artisan("loan:approve 123")->assertFailed();
+
+    }
 }

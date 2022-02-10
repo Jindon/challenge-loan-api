@@ -233,4 +233,22 @@ class LoanServiceTest extends TestCase
             'status' => LoanStatus::CLOSED,
         ]);
     }
+
+    public function test_service_cannot_fully_pay_a_closed_loan()
+    {
+        $loan = Loan::factory()->create([
+            'term' => 3,
+            'user_id' => $this->user->id
+        ]);
+        $issuedOn = '2022-02-10';
+        $this->loanService->approve($loan, $issuedOn);
+        $loan->fresh();
+
+        $this->loanService->payAll($loan);
+
+        $this->expectException("Exception");
+        $this->expectExceptionMessage("Loan already closed");
+
+        $this->loanService->payAll($loan);
+    }
 }

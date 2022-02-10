@@ -14,8 +14,8 @@ class ShowPaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if($this->route('payment')) {
-            return $this->user()->can('view', $this->route('payment'));
+        if($this->route('loan')) {
+            return $this->user()->can('view', $this->route('loan'));
         }
 
         return $this->user()->can('view', Payment::class);

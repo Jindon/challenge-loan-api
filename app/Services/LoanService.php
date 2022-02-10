@@ -95,6 +95,10 @@ class LoanService
     public function payAll(Loan $loan): Loan
     {
         try {
+            if ($loan->status === LoanStatus::CLOSED) {
+                throw new \Exception('Loan already closed');
+            }
+
             DB::beginTransaction();
             $loan->payments()->pending()->update([
                 'paid_on' => now()
