@@ -74,6 +74,10 @@ and FRONTEND_URL values in .env file.
 ```
 
 _**The app uses sanctum cookie based authentication, so these configs are important_
+
+_If you encounter issues saying invalid csrf, try changing `127.0.0.1` to `localhost` or vice-vera
+to match the values in the `.env` file_
+
 ## Features
 
 - User Login, Register
