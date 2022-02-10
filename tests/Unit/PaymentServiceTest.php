@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Enums\LoanStatus;
 use App\Models\Loan;
-use App\Models\Payment;
 use App\Models\User;
 use App\Services\PaymentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,7 +32,6 @@ class PaymentServiceTest extends TestCase
             'user_id' => $this->user->id,
             'issued_on' => $issuedOn
         ]);
-        $loan->fresh();
 
         $this->assertDatabaseCount('payments', 0);
 
@@ -75,7 +73,6 @@ class PaymentServiceTest extends TestCase
             'user_id' => $this->user->id,
             'issued_on' => $issuedOn
         ]);
-        $loan->fresh();
 
         $this->paymentService->generatePayments($loan);
 
@@ -120,7 +117,6 @@ class PaymentServiceTest extends TestCase
             'term' => 3,
             'user_id' => $this->user->id
         ]);
-        $loan->fresh();
 
         $this->paymentService->generatePayments($loan);
 
@@ -139,7 +135,6 @@ class PaymentServiceTest extends TestCase
             'term' => 3,
             'user_id' => $this->user->id
         ]);
-        $loan->fresh();
 
         $this->paymentService->generatePayments($loan);
 
@@ -183,7 +178,6 @@ class PaymentServiceTest extends TestCase
                 'term' => 3,
                 'user_id' => $this->user->id
             ]);
-        $loan->fresh();
 
         $this->paymentService->generatePayments($loan);
 
@@ -241,7 +235,6 @@ class PaymentServiceTest extends TestCase
             'term' => 3,
             'user_id' => $this->user->id
         ]);
-        $loan->fresh();
 
         $this->paymentService->generatePayments($loan);
 
