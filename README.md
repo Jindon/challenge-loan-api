@@ -1,64 +1,106 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Aspire Loan API (Code Challenge)
 
-## About Laravel
+It is an app that allows authenticated users to go through a loan application.
+All the loans will be assumed to have a “weekly” repayment frequency.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+After the loan is approved, the user can submit the weekly loan repayments.
+A simplified repay functionality, which doesn't check if the dates are
+correct but will just set the weekly amount to be repaid.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tech
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Laravel 9, PHP 8.1 (uses enums)
 
-## Laravel Sponsors
+- Auth scafold using [Laravel Breeze API](https://laravel.com/docs/9.x/starter-kits#breeze-and-next)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- Uses [Spatie Laravel Query Builder](https://spatie.be/docs/laravel-query-builder/v5/introduction) for easy API queries (filters, includes, etc.)
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Installation
 
-## Contributing
+The app can be installed and served using the `initial_setup.bash` script file.
+Or follow the steps below to install manually:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+After cloning the project, copy the `.env.example` file and rename it to `.env`.
 
-## Code of Conduct
+Update the `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD` values to your local database setup.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Run the following commands from the project directory:
 
-## Security Vulnerabilities
+```bash
+  composer install
+  --------------
+  php artisan key:generate
+  --------------
+  php artisan migrate
+  --------------
+  php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  php artisan test
+```
+
+
+## Documentation
+
+The API documentation is provided as a Postman Collection and
+can be found in the project root. `Aspire Loan API.postman_collection.json`.
+
+Import the collection into your Postman client and setup an environment with the following
+key value pairs
+
+```
+api_url : http://127.0.0.1:8000
+
+frontend_host : localhost:3000
+
+xsrf-cookie
+
+------------------
+#xsrf-cookie will be authomatically added when you run the register request
+# Also the api_url and frontend_host corresponds to the APP_URL
+and FRONTEND_URL values in .env file.
+```
+
+_**The app uses sanctum cookie based authentication, so these configs are important_
+## Features
+
+- User Login, Register
+- User Loan Application
+- Console command to approve loan. `php artisan loan:approve {loan_id}`
+- Loan Payments: Single or All at once
+
+
+## Instructions on testing with Postman
+
+- Register a user first. This will automatically login the user
+- To login, you need to logout if already logged in
+- Create a loan using the Create Loan Application request
+- To approve the loan run `php artisan loan:approve {loan_id}`. This will generate all the Payments based on the term of the loan
+- To make a payment use the Make Payment request. Make sure to provide the correct amount and currency_code.
+- To pay all pending payments and close the loan, use the Make Full Payment request.
+
+_**Note: Amounts are stored in the lowest denomination of the currency.
+But API response will convert it to the actual amount (amount / 100)
+So you need to convert the amount in the API response to the lowest denomination
+(amount * 100).**_
+
+
+## More Information
+
+To know more about the choices I have made while building this project and what could be improved upon
+view this notion document below.
+
+[Aspire Code Challenge Documentation](https://lapis-talos-abb.notion.site/Aspire-Code-Challenge-Documentation-7b3be8d37fbb44fc880a876cb228c148)
+
